@@ -13,6 +13,6 @@ Generation takes about 15 minutes.
 
 Credits
 -------
-WzorNET - for finding out that techbench contains more than Windows 10
-Ron Yorston - busybox-w32 (https://frippery.org/busybox/)
-http://winampplugins.co.uk/curl/ - Windows compilation of curl
+WzorNET - for finding out that techbench contains more than Windows 10</br>
+Ron Yorston - busybox-w32 (https://frippery.org/busybox/)</br>
+http://winampplugins.co.uk/curl/ - Windows compilation of curl</br>
