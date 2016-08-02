@@ -59,6 +59,7 @@ if %productID% GEQ 75 if %productID% LEQ 82 set "appendVer= (Threshold 1)"
 if %productID% GEQ 99 if %productID% LEQ 106 set "appendVer= (Threshold 2)"
 if %productID% GEQ 109 if %productID% LEQ 116 set "appendVer= (Threshold 2, February 2016 Update)"
 if %productID% GEQ 178 if %productID% LEQ 185 set "appendVer= (Threshold 2, April 2016 Update)"
+if %productID% GEQ 242 if %productID% LEQ 247 set "appendVer= (Redstone 1)"
 
 set "appendVer=%appendVer% [ID: %productID%]"
 
