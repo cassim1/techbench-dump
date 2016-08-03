@@ -75,7 +75,7 @@ if %errorlevel% NEQ 0 goto retryGetName
 echo.>> "Techbench dump.md"
 
 %binDir%\busybox.exe echo -ne "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\033[37;1mWriting...\033[0m                \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
-for /f "delims=" %%a IN (tmp%rnd%\prod.txt) do echo * [!!%%a](quot"quot%getDownUrl%&%%aquot"quot)^<br^> >> "Techbench dump.md"
+for /f "delims=" %%a IN (tmp%rnd%\prod.txt) do echo * [!!%%a](quot"quot%getDownUrl%&%%aquot"quot) >> "Techbench dump.md"
 
 echo.>> "Techbench dump.md"
 
