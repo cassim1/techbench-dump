@@ -24,11 +24,11 @@ color 07
 %binDir%\busybox.exe echo -e "\033[36;1mTechbench dump script (Markdown version)\033[0m"
 
 echo # TechBench dump > "Techbench dump.md"
-for /f "delims=" %%a IN ('%binDir%\busybox.exe date -Iseconds') do echo Generated on %%a using:^<br/^> >> "Techbench dump.md"
-for /f "delims=" %%a IN ('%binDir%\curl.exe -V ^| %binDir%\busybox.exe head -n1') do echo %%a^<br/^> >> "Techbench dump.md"
-for /f "delims=" %%a IN ('%binDir%\busybox.exe ^| %binDir%\busybox.exe head -n1') do echo %%a^<br/^> >> "Techbench dump.md"
+for /f "delims=" %%a IN ('%binDir%\busybox.exe date -Iseconds') do echo Generated on %%a using:^<br^> >> "Techbench dump.md"
+for /f "delims=" %%a IN ('%binDir%\curl.exe -V ^| %binDir%\busybox.exe head -n1') do echo %%a^<br^> >> "Techbench dump.md"
+for /f "delims=" %%a IN ('%binDir%\busybox.exe ^| %binDir%\busybox.exe head -n1') do echo %%a^<br^> >> "Techbench dump.md"
 echo.>> "Techbench dump.md"
-echo Number of products: !!productsNumberPlaceholder!!^<br/^> >> "Techbench dump.md"
+echo Number of products: !!productsNumberPlaceholder!!^<br^> >> "Techbench dump.md"
 echo.>> "Techbench dump.md"
 
 echo Checking for languages using Product ID...
@@ -75,7 +75,7 @@ if %errorlevel% NEQ 0 goto retryGetName
 echo.>> "Techbench dump.md"
 
 %binDir%\busybox.exe echo -ne "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\033[37;1mWriting...\033[0m                \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
-for /f "delims=" %%a IN (tmp%rnd%\prod.txt) do echo * [!!%%a](quot"quot%getDownUrl%&%%aquot"quot)^</br^> >> "Techbench dump.md"
+for /f "delims=" %%a IN (tmp%rnd%\prod.txt) do echo * [!!%%a](quot"quot%getDownUrl%&%%aquot"quot)^<br^> >> "Techbench dump.md"
 
 echo.>> "Techbench dump.md"
 

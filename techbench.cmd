@@ -30,10 +30,10 @@ echo ^</head^> >> "Techbench dump.html"
 echo ^<body^> >> "Techbench dump.html"
 echo ^<font face="Consolas, Monospace" size="2"^> >> "Techbench dump.html"
 echo ^<h1^>TechBench dump^</h1^> >> "Techbench dump.html"
-for /f "delims=" %%a IN ('%binDir%\busybox.exe date -Iseconds') do echo Generated on %%a using:^<br/^> >> "Techbench dump.html"
-for /f "delims=" %%a IN ('%binDir%\curl.exe -V ^| %binDir%\busybox.exe head -n1') do echo %%a^<br/^> >> "Techbench dump.html"
-for /f "delims=" %%a IN ('%binDir%\busybox.exe ^| %binDir%\busybox.exe head -n1') do echo %%a^<br/^> >> "Techbench dump.html"
-echo ^<br/^>Number of products: !!productsNumberPlaceholder!!^<br/^> >> "Techbench dump.html"
+for /f "delims=" %%a IN ('%binDir%\busybox.exe date -Iseconds') do echo Generated on %%a using:^<br^> >> "Techbench dump.html"
+for /f "delims=" %%a IN ('%binDir%\curl.exe -V ^| %binDir%\busybox.exe head -n1') do echo %%a^<br^> >> "Techbench dump.html"
+for /f "delims=" %%a IN ('%binDir%\busybox.exe ^| %binDir%\busybox.exe head -n1') do echo %%a^<br^> >> "Techbench dump.html"
+echo ^<br^>Number of products: !!productsNumberPlaceholder!!^<br^> >> "Techbench dump.html"
 
 echo Checking for languages using Product ID...
 echo.
@@ -77,7 +77,7 @@ if %errorlevel% NEQ 0 goto retryGetName
 if %errorlevel% NEQ 0 goto retryGetName
 
 %binDir%\busybox.exe echo -ne "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\033[37;1mWriting...\033[0m                \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
-for /f "delims=" %%a IN (tmp%rnd%\prod.txt) do echo ^<a href="%getDownUrl%&%%a"^>!!%%a^</a^>^<br/^> >> "Techbench dump.html"
+for /f "delims=" %%a IN (tmp%rnd%\prod.txt) do echo ^<a href="%getDownUrl%&%%a"^>!!%%a^</a^>^<br^> >> "Techbench dump.html"
 
 set /a foundProducts=foundProducts+1
 %binDir%\busybox.exe echo -e "\b\b\b\b\b\b\b\b\b\b\033[32;1mOK\033[0m        "
