@@ -25,10 +25,10 @@ color 07
 
 echo ^<html^> > "Techbench dump.html"
 echo ^<head^> >> "Techbench dump.html"
-echo ^<title^>Techbench dump^</title^> >> "Techbench dump.html"
+echo ^<title^>TechBench dump^</title^> >> "Techbench dump.html"
+echo ^<style^>body{font-family: "Segoe UI", "Tahoma", "Arial", sans-serif; font-size: 10pt} h1{font-weight: 600} h3{font-weight: 600} a{text-decoration: none; color: #0060A5;} a:hover{text-decoration: underline}^</style^> >> "Techbench dump.html"
 echo ^</head^> >> "Techbench dump.html"
 echo ^<body^> >> "Techbench dump.html"
-echo ^<font face="Consolas, Monospace" size="2"^> >> "Techbench dump.html"
 echo ^<h1^>TechBench dump^</h1^> >> "Techbench dump.html"
 for /f "delims=" %%a IN ('%binDir%\busybox.exe date -Iseconds') do echo Generated on %%a using:^<br^> >> "Techbench dump.html"
 for /f "delims=" %%a IN ('%binDir%\curl.exe -V ^| %binDir%\busybox.exe head -n1') do echo %%a^<br^> >> "Techbench dump.html"
@@ -77,7 +77,9 @@ if %errorlevel% NEQ 0 goto retryGetName
 if %errorlevel% NEQ 0 goto retryGetName
 
 %binDir%\busybox.exe echo -ne "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\033[37;1mWriting...\033[0m                \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
-for /f "delims=" %%a IN (tmp%rnd%\prod.txt) do echo ^<a href="%getDownUrl%&%%a"^>!!%%a^</a^>^<br^> >> "Techbench dump.html"
+echo ^<ul^> >> "Techbench dump.html"
+for /f "delims=" %%a IN (tmp%rnd%\prod.txt) do echo ^<li^>^<a href="%getDownUrl%&%%a"^>!!%%a^</a^>^</li^> >> "Techbench dump.html"
+echo ^</ul^> >> "Techbench dump.html"
 
 set /a foundProducts=foundProducts+1
 %binDir%\busybox.exe echo -e "\b\b\b\b\b\b\b\b\b\b\033[32;1mOK\033[0m        "
@@ -94,7 +96,6 @@ echo Number of products: %foundProducts%
 echo.
 echo Formatting HTML...
 %binDir%\busybox.exe sed -i s/!!.*language^=//g "Techbench dump.html"
-echo ^</font^> >> "Techbench dump.html"
 echo ^</body^> >> "Techbench dump.html"
 echo ^</html^> >> "Techbench dump.html"
 
