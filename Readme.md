@@ -11,6 +11,16 @@ Usage
 Simply run desired script, it will generate everything automatically.<br>
 Generation takes about 15 minutes.
 
+Command line usage:
+```
+<script.cmd> [first_id] [last_id]
+```
+
+Example command to create HTML file with products from range between 242 and 247:
+```
+techbench.cmd 242 247
+```
+
 Credits
 -------
 WzorNET - finding out that TechBench contains more than Windows 10.<br>

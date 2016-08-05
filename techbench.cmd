@@ -1,6 +1,20 @@
 @echo off
+if [%1] NEQ [] if [%2]==[] echo Usage: %~nx0 [first_id] [last_id] & exit /b
+if [%1] NEQ [] if [%2] NEQ [] goto setArguments
+
 set productID=1
 set maxProdID=300
+goto contInit
+
+:setArguments
+set /a productID=%1+0
+set /a maxProdID=%2+0
+
+if %productID% LEQ 0 echo First Product ID needs to be larger than 0 & exit /b
+if %maxProdID% LEQ 0 echo Last Product ID needs to be larger than 0 & exit /b
+if %maxProdID% LSS %productID% echo Last Product ID needs to be larger or equal to First Product ID & exit /b
+
+:contInit
 set appendVer=
 set "getLangUrl=https://www.microsoft.com/en-us/api/controls/contentinclude/html?pageId=a8f8f489-4c7f-463a-9ca6-5cff94d8d041&host=www.microsoft.com&segments=software-download,windows10ISO&query=&action=getskuinformationbyproductedition"
 set "getDownUrl=https://www.microsoft.com/en-us/api/controls/contentinclude/html?pageId=cfa9e580-a81e-4a4b-a846-7b21bf4e2e5b&host=www.microsoft.com&segments=software-download,windows10ISO&query=&action=GetProductDownloadLinksBySku"
@@ -22,6 +36,8 @@ cls
 color 07
 
 %binDir%\busybox.exe echo -e "\033[36;1mTechbench dump script (HTML version)\033[0m"
+%binDir%\busybox.exe echo -e "\033[37;1mUsing Product ID range from %productID% to %maxProdID%\033[0m"
+echo.
 
 echo ^<html^> > "Techbench dump.html"
 echo ^<head^> >> "Techbench dump.html"
@@ -105,3 +121,4 @@ rmdir /q /s tmp%rnd%
 echo.
 echo Done.
 pause
+exit /b
