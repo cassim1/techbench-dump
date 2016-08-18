@@ -96,7 +96,7 @@ if %errorlevel% NEQ 0 goto retryGetName
 
 %binDir%\busybox.exe echo -ne "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\033[37;1mWriting...\033[0m                \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
 echo ^<ul^> >> "Techbench dump.html"
-for /f "delims=&= tokens=2,4" %%a IN (tmp%rnd%\prod.txt) do echo do echo ^<li^>^<a href="%getDownUrlShort%?skuId=%%a"^>%%b^</a^>^</li^> >> "Techbench dump.html"
+for /f "delims=&= tokens=2,4" %%a IN (tmp%rnd%\prod.txt) do echo ^<li^>^<a href="%getDownUrlShort%?skuId=%%a"^>%%b^</a^>^</li^> >> "Techbench dump.html"
 echo ^</ul^> >> "Techbench dump.html"
 
 set /a foundProducts=foundProducts+1
