@@ -18,6 +18,8 @@ if %maxProdID% LSS %productID% echo Last Product ID needs to be larger or equal 
 set appendVer=
 set "getLangUrl=https://www.microsoft.com/en-us/api/controls/contentinclude/html?pageId=a8f8f489-4c7f-463a-9ca6-5cff94d8d041&host=www.microsoft.com&segments=software-download,windows10ISO&query=&action=getskuinformationbyproductedition"
 set "getDownUrl=https://www.microsoft.com/en-us/api/controls/contentinclude/html?pageId=cfa9e580-a81e-4a4b-a846-7b21bf4e2e5b&host=www.microsoft.com&segments=software-download,windows10ISO&query=&action=GetProductDownloadLinksBySku"
+set "getDownUrlShort=http://mdl-tb.ct8.pl/get.php"
+set "refererUrl=https://www.microsoft.com/en-us/software-download/windows10ISO"
 
 set rnd=%random%
 set foundProducts=0
@@ -54,7 +56,7 @@ echo.
 %binDir%\busybox.exe echo -n "Checking product: %productID%..."
 
 :retryGetLangs
-%binDir%\curl.exe -s -o"tmp%rnd%\temp.txt" "%getLangUrl%&productEditionId=%productID%"
+%binDir%\curl.exe -s -o"tmp%rnd%\temp.txt" "%getLangUrl%&productEditionId=%productID%" -H "Referer: %refererUrl%"
 
 %binDir%\busybox.exe grep "The product key you provided is for a product not currently supported by this site or may be invalid" "tmp%rnd%\temp.txt" > NUL
 if %errorlevel% EQU 0 %binDir%\busybox.exe echo -e " \033[31;1mFail\033[0m" & goto nextProduct
@@ -80,7 +82,7 @@ set "appendVer=%appendVer% [ID: %productID%]"
 for /f %%a IN ('%binDir%\busybox.exe tail -n1 "tmp%rnd%\prod.txt"') do set "tempLink=%%a"
 for /f %%a IN ('%binDir%\busybox.exe sed s/.*language^=//g "tmp%rnd%\temp.txt"') do set "tempLang=%%a"
 
-%binDir%\curl.exe -s -o"tmp%rnd%\temp.txt" "%getDownUrl%&%tempLink%"
+%binDir%\curl.exe -s -o"tmp%rnd%\temp.txt" "%getDownUrl%&%tempLink%" -H "Referer: %refererUrl%"
 
 %binDir%\busybox.exe grep "Choose a link below to begin the download" "tmp%rnd%\temp.txt" > NUL
 if %errorlevel% NEQ 0 goto retryGetName
@@ -91,7 +93,7 @@ if %errorlevel% NEQ 0 goto retryGetName
 echo.>> "Techbench dump.md"
 
 %binDir%\busybox.exe echo -ne "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\033[37;1mWriting...\033[0m                \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
-for /f "delims=" %%a IN (tmp%rnd%\prod.txt) do echo * [!!%%a](quot"quot%getDownUrl%&%%aquot"quot) >> "Techbench dump.md"
+for /f "delims=&= tokens=2,4" %%a IN (tmp%rnd%\prod.txt) do echo * [%%b](quot"quot%getDownUrlShort%?skuId=%%aquot"quot) >> "Techbench dump.md"
 
 echo.>> "Techbench dump.md"
 
@@ -109,7 +111,7 @@ echo Number of products: %foundProducts%
 
 echo.
 echo Formatting markdown...
-%binDir%\busybox.exe sed -r -i "s/!!skuId=.{0,40}&language=//g" "Techbench dump.md"
+%binDir%\busybox.exe sed -r -i "s/!!language=//g" "Techbench dump.md"
 %binDir%\busybox.exe sed -i s/quot\"quot//g "Techbench dump.md"
 
 echo Cleaning temp files...
