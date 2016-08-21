@@ -1,0 +1,15 @@
+body {
+  padding-top: 50px;
+}
+
+.content {
+  padding: 30px 15px;
+}
+
+.modal-content {
+	padding: 20px;
+}
+
+#control {
+	padding: 10px 15px;
+}
