@@ -25,9 +25,9 @@ set rnd=%random%
 set foundProducts=0
 
 if [%PROCESSOR_ARCHITECTURE%] == [AMD64] (
-set binDir=bin\x64
+set binDir=..\bin\x64
 ) ELSE (
-set binDir=bin
+set binDir=..\bin
 )
 
 cd /d %~dp0
@@ -37,21 +37,17 @@ title Techbench dump script
 cls
 color 07
 
-%binDir%\busybox.exe echo -e "\033[36;1mTechbench dump script (HTML version)\033[0m"
+%binDir%\busybox.exe echo -e "\033[36;1mTechbench dump script (Markdown version)\033[0m"
 %binDir%\busybox.exe echo -e "\033[37;1mUsing Product ID range from %productID% to %maxProdID%\033[0m"
 echo.
 
-echo ^<html^> > "Techbench dump.html"
-echo ^<head^> >> "Techbench dump.html"
-echo ^<title^>TechBench dump^</title^> >> "Techbench dump.html"
-echo ^<style^>body{font-family: "Segoe UI", "Tahoma", "Arial", sans-serif; font-size: 10pt} h1{font-weight: 600} h3{font-weight: 600} a{text-decoration: none; color: #0060A5;} a:hover{text-decoration: underline}^</style^> >> "Techbench dump.html"
-echo ^</head^> >> "Techbench dump.html"
-echo ^<body^> >> "Techbench dump.html"
-echo ^<h1^>TechBench dump^</h1^> >> "Techbench dump.html"
-for /f "delims=" %%a IN ('%binDir%\busybox.exe date -Iseconds') do echo Generated on %%a using:^<br^> >> "Techbench dump.html"
-for /f "delims=" %%a IN ('%binDir%\curl.exe -V ^| %binDir%\busybox.exe head -n1') do echo %%a^<br^> >> "Techbench dump.html"
-for /f "delims=" %%a IN ('%binDir%\busybox.exe ^| %binDir%\busybox.exe head -n1') do echo %%a^<br^> >> "Techbench dump.html"
-echo ^<br^>Number of products: !!productsNumberPlaceholder!!^<br^> >> "Techbench dump.html"
+echo # TechBench dump > "Techbench dump.md"
+for /f "delims=" %%a IN ('%binDir%\busybox.exe date -Iseconds') do echo Generated on %%a using:^<br^> >> "Techbench dump.md"
+for /f "delims=" %%a IN ('%binDir%\curl.exe -V ^| %binDir%\busybox.exe head -n1') do echo %%a^<br^> >> "Techbench dump.md"
+for /f "delims=" %%a IN ('%binDir%\busybox.exe ^| %binDir%\busybox.exe head -n1') do echo %%a^<br^> >> "Techbench dump.md"
+echo.>> "Techbench dump.md"
+echo Number of products: !!productsNumberPlaceholder!!^<br^> >> "Techbench dump.md"
+echo.>> "Techbench dump.md"
 
 echo Checking for languages using Product ID...
 echo.
@@ -91,13 +87,15 @@ for /f %%a IN ('%binDir%\busybox.exe sed s/.*language^=//g "tmp%rnd%\temp.txt"')
 %binDir%\busybox.exe grep "Choose a link below to begin the download" "tmp%rnd%\temp.txt" > NUL
 if %errorlevel% NEQ 0 goto retryGetName
 
-%binDir%\busybox.exe grep -o "<h2>.*<\/h2>" "tmp%rnd%\temp.txt" | %binDir%\busybox.exe sed "s/.*<h2>/<h3>/g";"s/ %tempLang%.*<\/h2>/%appendVer%<\/h3>/g" >> "Techbench dump.html"
+%binDir%\busybox.exe grep -o "<h2>.*<\/h2>" "tmp%rnd%\temp.txt" | %binDir%\busybox.exe sed "s/.*<h2>/### /g";"s/ %tempLang%.*<\/h2>/%appendVer%/g" >> "Techbench dump.md"
 if %errorlevel% NEQ 0 goto retryGetName
 
+echo.>> "Techbench dump.md"
+
 %binDir%\busybox.exe echo -ne "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\033[37;1mWriting...\033[0m                \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
-echo ^<ul^> >> "Techbench dump.html"
-for /f "delims=&= tokens=2,4" %%a IN (tmp%rnd%\prod.txt) do echo ^<li^>^<a href="%getDownUrlShort%?skuId=%%a"^>%%b^</a^>^</li^> >> "Techbench dump.html"
-echo ^</ul^> >> "Techbench dump.html"
+for /f "delims=&= tokens=2,4" %%a IN (tmp%rnd%\prod.txt) do echo * [%%b](quot"quot%getDownUrlShort%?skuId=%%aquot"quot) >> "Techbench dump.md"
+
+echo.>> "Techbench dump.md"
 
 set /a foundProducts=foundProducts+1
 %binDir%\busybox.exe echo -e "\b\b\b\b\b\b\b\b\b\b\033[32;1mOK\033[0m        "
@@ -109,13 +107,12 @@ if %productID% LEQ %maxProdID% goto getLangs
 
 echo.
 echo Number of products: %foundProducts%
-%binDir%\busybox.exe sed -r -i "s/!!productsNumberPlaceholder!!/%foundProducts%/g" "Techbench dump.html"
+%binDir%\busybox.exe sed -r -i "s/!!productsNumberPlaceholder!!/%foundProducts%/g" "Techbench dump.md"
 
 echo.
-echo Formatting HTML...
-%binDir%\busybox.exe sed -i s/!!.*language^=//g "Techbench dump.html"
-echo ^</body^> >> "Techbench dump.html"
-echo ^</html^> >> "Techbench dump.html"
+echo Formatting markdown...
+%binDir%\busybox.exe sed -r -i "s/!!language=//g" "Techbench dump.md"
+%binDir%\busybox.exe sed -i s/quot\"quot//g "Techbench dump.md"
 
 echo Cleaning temp files...
 rmdir /q /s tmp%rnd%
