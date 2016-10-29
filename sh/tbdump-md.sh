@@ -96,9 +96,9 @@ echo "$infoHead TechBench dump script (tbdump-$tbdumpVersion)"
 echo "$infoHead Using Product ID range from $minProdID to $maxProdID"
 
 echo "# TechBench dump" > "Techbench dump.md"
-echo "Generated on $(date -Iseconds) using:<br>" >> "Techbench dump.md"
+echo "Generated on $(date "+%Y-%m-%dT%H:%M:%S%z") using:<br>" >> "Techbench dump.md"
 echo "TechBench dump script (tbdump-$tbdumpVersion)<br>" >> "Techbench dump.md"
-echo "$(uname -a)<br>" >> "Techbench dump.md"
+echo "$(uname -mrsio)<br>" >> "Techbench dump.md"
 echo "$(curl -V | head -n1)<br>" >> "Techbench dump.md"
 echo "" >> "Techbench dump.md"
 echo "Number of products: !!productsNumberPlaceholder!!<br>" >> "Techbench dump.md"
@@ -130,7 +130,8 @@ for productID in $(seq $minProdID $maxProdID); do
 	echo ""
 done;
 
-sed -r -i "s/!!productsNumberPlaceholder!!/$productsFound/g" "Techbench dump.md"
-echo "$infoHead Number of products: $productsFound"
+sed s/!!productsNumberPlaceholder!!/$productsFound/g "Techbench dump.md" > "Techbench dump.tmp"
+mv -f "Techbench dump.tmp" "Techbench dump.md"
 
+echo "$infoHead Number of products: $productsFound"
 echo "$infoHead Done"
