@@ -10,6 +10,6 @@ set binDir=bin
 set "PATH=%PATH%;%~dp0%binDir%"
 set "WIN_WRAPPED=1"
 
-busybox ash -c "./tbdump.sh md %*"
+busybox ash -c "./tbdump.sh html %*"
 if %ERRORLEVEL% EQU 0 echo. & pause 
 exit /b
