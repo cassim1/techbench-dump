@@ -9,7 +9,9 @@ Supported generators:
 * html\t\t- generates HTML based dump
 * bootstrap\t- generates Bootstrap based HTML dump
 * md\t\t- generates markdown based dump
-* web\t\t- generates dump for web purposes"
+* web\t\t- generates dump for web purposes
+* html_legacy\t- generates HTML based dump (legacy links)
+* md_legacy\t- generates markdown based dump (legacy links)"
 
 if [ -z "$1" ]; then
 	echo -e "$helpUsage"
@@ -18,6 +20,12 @@ elif [ "$1" = "html" ]; then
 	useGen="html"
 elif [ "$1" = "md" ]; then
 	useGen="md"
+elif [ "$1" = "html_legacy" ]; then
+	useGen="html"
+	legacyGen=1
+elif [ "$1" = "md_legacy" ]; then
+	useGen="md"
+	legacyGen=1
 elif [ "$1" = "bootstrap" ]; then
 	useGen="bootstrap"
 elif [ "$1" = "web" ]; then
@@ -48,7 +56,7 @@ noProductErr="The product key you provided is for a product not currently suppor
 
 #URLs to all needed things
 getLangUrl="https://www.microsoft.com/en-us/api/controls/contentinclude/html?pageId=a8f8f489-4c7f-463a-9ca6-5cff94d8d041&host=www.microsoft.com&segments=software-download,windows10ISO&query=&action=getskuinformationbyproductedition"
-getDownUrl="https://www.microsoft.com/en-us/api/controls/contentinclude/html?pageId=cfa9e580-a81e-4a4b-a846-7b21bf4e2e5b&host=www.microsoft.com&segments=software-download,windows10ISO&query=&action=GetProductDownloadLinksBySku"
+getDownUrlLong="https://www.microsoft.com/en-us/api/controls/contentinclude/html?pageId=cfa9e580-a81e-4a4b-a846-7b21bf4e2e5b&host=www.microsoft.com&segments=software-download,windows10ISO&query=&action=GetProductDownloadLinksBySku"
 getDownUrlShort="http://mdl-tb.ct8.pl/get.php"
 refererUrl="https://www.microsoft.com/en-us/software-download/windows10ISO"
 
@@ -63,6 +71,12 @@ fi
 if ! type curl > $nullRedirect; then
 	echo "$errorHead This scripts needs cUrl to be installed! Exiting" >&2
 	exit
+fi
+
+if [ $legacyGen -eq 1 ]; then
+	getDownUrl="$getDownUrlLong&skuId="
+else
+	getDownUrl="$getDownUrlShort?skuId="
 fi
 
 #############################
@@ -104,7 +118,7 @@ function getProductName {
 	local tempLink=$(printf "$tempLine" | sed s/.language=.*//g)
 	tempLang=$(printf "$tempLine" | awk -F'[&= ]' '{print $4}')
 
-	local result=$(curl -s "$getDownUrl&$(echo -n $tempLink)" -H "Referer: $refererUrl")
+	local result=$(curl -s "$getDownUrlLong&$(echo -n $tempLink)" -H "Referer: $refererUrl")
 
 	echo "$result" | grep "Choose a link below to begin the download" > $nullRedirect
 	if [ $? -ne 0 ]; then
@@ -129,7 +143,7 @@ function writeMarkdown {
 	fi
 
 	echo "" >> "Techbench dump.md"
-	echo "$langList" | tr -d '\r' | awk -v url="$getDownUrlShort?skuId=" -F'[&=]' '{print "* ["$4"]("url $2")"}' >> "Techbench dump.md"
+	echo "$langList" | tr -d '\r' | awk -v url="$getDownUrl" -F'[&=]' '{print "* ["$4"]("url $2")"}' >> "Techbench dump.md"
 	return 0
 }
 
@@ -196,7 +210,7 @@ function writeHtml {
 	echo "$productNameHtml" | sed "s/.*<h2>/<h3>/g;s/ $tempLang.*<\/h2>/$appendVer<\/h3>/g" >> "Techbench dump.html"
 
 	echo "<ul>" >> "Techbench dump.html"
-	echo "$langList" | tr -d '\r' | awk -v url="$getDownUrlShort?skuId=" -F'[&=]' '{print "<li><a href=\""url $2"\">"$4"</a></li>"}' >> "Techbench dump.html"
+	echo "$langList" | tr -d '\r' | awk -v url="$getDownUrl" -F'[&=]' '{print "<li><a href=\""url $2"\">"$4"</a></li>"}' >> "Techbench dump.html"
 	echo "</ul>" >> "Techbench dump.html"
 	return 0
 }
