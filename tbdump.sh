@@ -3,6 +3,8 @@
 minProdID=1
 maxProdID=300
 
+legacyGen=0
+
 helpUsage="Usage: $0 generator [first_id] [last_id]
 
 Supported generators:
