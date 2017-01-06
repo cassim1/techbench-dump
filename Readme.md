@@ -37,8 +37,8 @@ Example command to create HTML file with products from range between 242 and 247
 
 TechBench dump
 --------------
-Website: http://mdl-tb.ct8.pl/<br>
-Markdown: http://mdl-tb.ct8.pl/dump.md
+Website: https://mdl-tb.ct8.pl/<br>
+Markdown: https://mdl-tb.ct8.pl/dump.md
 
 Credits
 -------

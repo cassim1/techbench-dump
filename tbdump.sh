@@ -48,7 +48,7 @@ if [ -n "$2" -a -n "$3" ]; then
 	if [ $maxProdID -lt $minProdID ]; then echo "Last Product ID needs to be larger or equal to First Product ID"; exit 1; fi
 fi
 
-tbdumpVersion="10"
+tbdumpVersion="master"
 
 infoHead="[INFO]"
 warnHead="[WARNING]"
@@ -59,7 +59,7 @@ noProductErr="The product key you provided is for a product not currently suppor
 #URLs to all needed things
 getLangUrl="https://www.microsoft.com/en-us/api/controls/contentinclude/html?pageId=a8f8f489-4c7f-463a-9ca6-5cff94d8d041&host=www.microsoft.com&segments=software-download,windows10ISO&query=&action=getskuinformationbyproductedition"
 getDownUrlLong="https://www.microsoft.com/en-us/api/controls/contentinclude/html?pageId=cfa9e580-a81e-4a4b-a846-7b21bf4e2e5b&host=www.microsoft.com&segments=software-download,windows10ISO&query=&action=GetProductDownloadLinksBySku"
-getDownUrlShort="http://mdl-tb.ct8.pl/get.php"
+getDownUrlShort="https://mdl-tb.ct8.pl/get.php"
 refererUrl="https://www.microsoft.com/en-us/software-download/windows10ISO"
 
 #Fix redirection on Windows and warn user, that Control-C is broken
