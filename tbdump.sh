@@ -1,7 +1,7 @@
 #!/bin/bash
 
 minProdID=1
-maxProdID=300
+maxProdID=350
 
 legacyGen=0
 
