@@ -48,7 +48,7 @@ if [ -n "$2" -a -n "$3" ]; then
 	if [ $maxProdID -lt $minProdID ]; then echo "Last Product ID needs to be larger or equal to First Product ID"; exit 1; fi
 fi
 
-tbdumpVersion="master"
+tbdumpVersion="11"
 
 infoHead="[INFO]"
 warnHead="[WARNING]"
