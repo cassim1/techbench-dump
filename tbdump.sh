@@ -127,7 +127,13 @@ function getProductName {
 		return 1
 	fi
 
-	productNameHtml=$(echo "$result" | grep -o '<h2>.*<\/h2>')
+	productName=$(echo "$result" | grep -o '<h2>.*<\/h2>' | sed 's/.*<h2>/<h2>/g')
+	
+	if [ "$productName" == "<h2></h2>" ]; then
+		echo "$warnHead Got empty product name!"
+		productName=$(echo "$result" | grep -o "https:..software.*\/pr\/.*\?t=" | sed "s/.*https.*\/pr\//<h2>/g;s/\?t=/ [?]<\/h2>/g")
+	fi
+	
 	return 0
 }
 
@@ -139,7 +145,7 @@ function writeMarkdown {
 	local appendVer="$(identProduct)"
 	echo "" >> "Techbench dump.md"
 	
-	echo "$productNameHtml" | sed "s/.*<h2>/### /g;s/ $tempLang.*<\/h2>/$appendVer/g" >> "Techbench dump.md"
+	echo "$productName" | sed "s/<h2>/### /g;s/ $tempLang.*<\/h2>/<\/h2>/g;s/<\/h2>/$appendVer/g" >> "Techbench dump.md"
 	if [ $? -ne 0 ]; then
 		return 1
 	fi
@@ -209,7 +215,7 @@ function writeHtml {
 	local appendVer="$(identProduct)"
 	echo "" >> "Techbench dump.html"
 	
-	echo "$productNameHtml" | sed "s/.*<h2>/<h3>/g;s/ $tempLang.*<\/h2>/$appendVer<\/h3>/g" >> "Techbench dump.html"
+	echo "$productName" | sed "s/<h2>/<h3>/g;s/ $tempLang.*<\/h2>/<\/h2>/g;s/<\/h2>/$appendVer<\/h3>/g" >> "Techbench dump.html"
 
 	echo "<ul>" >> "Techbench dump.html"
 	echo "$langList" | tr -d '\r' | awk -v url="$getDownUrl" -F'[&=]' '{print "<li><a href=\""url $2"\">"$4"</a></li>"}' >> "Techbench dump.html"
@@ -253,7 +259,7 @@ function mainHtml {
 	echo "<html>" > "Techbench dump.html"
 	echo "<head>" >> "Techbench dump.html"
 	echo "<title>TechBench dump</title>" >> "Techbench dump.html"
-	echo "<style>body{font-family: "Segoe UI", "Tahoma", "Arial", sans-serif; font-size: 10pt} h1{font-weight: 600} h3{font-weight: 600} a{text-decoration: none; color: #0060A5;} a:hover{text-decoration: underline}</style>" >> "Techbench dump.html"
+	echo "<style>body{font-family: \"Segoe UI\", \"Tahoma\", \"Arial\", sans-serif; font-size: 10pt} h1{font-weight: 600} h3{font-weight: 600} a{text-decoration: none; color: #0060A5;} a:hover{text-decoration: underline}</style>" >> "Techbench dump.html"
 	echo "</head>" >> "Techbench dump.html"
 	echo "<body>" >> "Techbench dump.html"
 	echo "<h1>TechBench dump</h1>" >> "Techbench dump.html"
