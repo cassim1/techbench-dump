@@ -23,6 +23,7 @@ $out = str_replace('IsoX86', '<span class="glyphicon glyphicon-download-alt" ari
 $out = str_replace('<button class="button-flat button-purple modal-dismiss">Close</button>', '', $out);
 
 curl_close($req);
+$expire = time() + 86400;
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +36,7 @@ curl_close($req);
     <title>TechBench downloads</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <style>body{font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif; padding-top: 50px;} .content {padding: 30px 15px;} .modal-content {padding: 20px;} #control {padding: 10px 15px;}</style>
+    <style>body{font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif; padding-top: 50px;} .content {padding: 30px 15px;} .modal-content {padding: 20px;}</style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -69,20 +70,23 @@ curl_close($req);
     </nav>
 
     <div class="container">
-
       <div class="content">
-        <h1>Downloads</h1>
-        <p>Download link will only work if filename you entered is correct.</p>
+
+        <h1 class="uk-heading-line uk-text-center"><span>TechBench downloads</span></h1>
 
         <?php
-        echo "<h3>$fileName</h3>";
+        echo "<h3><span class=\"glyphicon glyphicon-file\" aria-hidden=\"true\"></span> $fileName</h3>";
         echo $out;
         ?>
 
-        <br><br>
-        <p><i>Links valid for 24 hours from time of creation.</i></p>
-      </div>
+        <p style="padding-top: 1.5em"><i>Links valid for 24 hours from time of creation.<br>
+        <?php echo "Links expire: " . gmdate("n/j/Y g:i:s A e", $expire); ?></i></p>
+        
+        <div class="alert alert-warning" style="margin-top: 1.5em">
+            <p><b>NOTE:</b> This website <b>does not</b> check if file exists on Microsoft servers</p>
+        </div>
 
+      </div>
     </div><!-- /.container -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

@@ -17,12 +17,13 @@ $out = str_replace('button button-long button-flat button-purple', 'btn btn-defa
 $out = str_replace('<button class="button-flat button-purple modal-dismiss">Close</button>', '', $out);
 $out = str_replace('<span class="product-download-type">IsoX64</span>', 'IsoX64', $out);
 $out = str_replace('<span class="product-download-type">IsoX86</span>', 'IsoX86', $out);
-$out = str_replace('<span class="product-download-type">Unknown</span>', '<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>', $out);
+$out = str_replace('<span class="product-download-type">Unknown</span>', '<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> ', $out);
 $out = str_replace('IsoX64 Download', '<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> 64-bit', $out);
 $out = str_replace('IsoX86 Download', '<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> 32-bit', $out);
-$out = str_replace('<h2>Downloads</h2>', '<h1>Downloads</h1>', $out);
-$out = str_replace('<h2>', '<h3>', $out);
+$out = preg_replace('/<h2>Downloads.*FAQ<\/a>./', '<h1>TechBench downloads</h1>', $out);
+$out = str_replace('<h2>', '<h3><span class="glyphicon glyphicon-file" aria-hidden="true"></span> ', $out);
 $out = str_replace('</h2>', '</h3>', $out);
+$out = str_replace('<div id="control">', '<div id="control" style="margin-top: -20px;">', $out);
 
 curl_close($req);
 ?>
@@ -37,7 +38,7 @@ curl_close($req);
     <title>TechBench downloads</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <style>body{font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif; padding-top: 50px;} .content {padding: 30px 15px;} .modal-content {padding: 20px;} #control {padding: 10px 15px;}</style>
+    <style>body{font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif; padding-top: 50px;} .content {padding: 30px 15px;} .modal-content {padding: 20px;}</style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -71,9 +72,11 @@ curl_close($req);
     </nav>
 
     <div class="container">
+      <div class="content">
 
-      <?php echo $out; ?>
+        <?php echo $out; ?>
 
+      </div>
     </div><!-- /.container -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
