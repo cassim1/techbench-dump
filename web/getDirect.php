@@ -11,8 +11,7 @@ $out = curl_exec($req);
 curl_close($req);
 
 if (strpos($out, 'We encountered a problem processing your request') !== false) {
-	$out = str_replace('<button class="button-flat button-purple modal-dismiss">Close</button>', '', $out);
-	echo $out;
+	echo 'There was an error processing your request.';
 	die();
 }
 

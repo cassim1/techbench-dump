@@ -11,6 +11,11 @@ $expire = time() + 86400;
 $out = curl_exec($req);
 curl_close($req);
 
+if (strpos($out, 'We encountered a problem processing your request') !== false) {
+	echo 'There was an error processing your request.';
+	die();
+}
+
 $out = preg_replace('/\n|\r|\t/', '', $out);
 
 $out = preg_replace('/<div.*?>|<span.*?>|<h.>Downloads.*FAQ<\/a>\.|<i>Links valid.*UTC<\/i>.*/', '', $out);

@@ -11,6 +11,11 @@ $expire = time() + 86400;
 $out = curl_exec($req);
 curl_close($req);
 
+if (strpos($out, 'We encountered a problem processing your request') !== false) {
+	echo 'There was an error processing your request.';
+	die();
+}
+
 $out = str_replace('<div id="control"><div id="html"><div xmlns:mscom="http://schemas.microsoft.com/CMSvNext" xmlns:md="http://schemas.microsoft.com/mscom-data" class="CSPvNext " xmlns="http://www.w3.org/1999/xhtml"><span class="page-data-sources"></span>
 
         <script>/*<![CDATA[*/var softwareDownload=softwareDownload||{};softwareDownload.productDownload={uri:"', '<a class="btn btn-primary" href="', $out);
