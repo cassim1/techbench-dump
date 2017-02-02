@@ -23,7 +23,6 @@ $out = preg_replace('/<input.*?>/', '&nbsp;', $out);
 $out = preg_replace('/<\/div>|<\/span>/', '', $out);
 $out = preg_replace('/button button-long button-flat button-purple/', 'btn btn-primary', $out, 1);
 $out = str_replace('button button-long button-flat button-purple', 'btn btn-default', $out);
-$out = str_replace('<button class="button-flat button-purple modal-dismiss">Close</button>', '', $out);
 $out = str_replace('Unknown Download', '<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download', $out);
 $out = str_replace('IsoX64 Download', '<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> 64-bit', $out);
 $out = str_replace('IsoX86 Download', '<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> 32-bit', $out);

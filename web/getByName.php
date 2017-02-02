@@ -27,7 +27,6 @@ $out = str_replace('"}/*]]>*/</script>
 $out = str_replace('Unknown', '<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download', $out);
 $out = str_replace('IsoX64', '<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> 64-bit', $out);
 $out = str_replace('IsoX86', '<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> 32-bit', $out);
-$out = str_replace('<button class="button-flat button-purple modal-dismiss">Close</button>', '', $out);
 ?>
 
 <!DOCTYPE html>
