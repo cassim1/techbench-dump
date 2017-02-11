@@ -27,7 +27,6 @@ Supported generators:
 * html\t\t- generates HTML based dump
 * bootstrap\t- generates Bootstrap based HTML dump
 * md\t\t- generates markdown based dump
-* web\t\t- generates dump for web purposes
 * html_legacy\t- generates HTML based dump (legacy links)
 * md_legacy\t- generates markdown based dump (legacy links)"
 
@@ -46,8 +45,6 @@ elif [ "$1" = "md_legacy" ]; then
 	legacyGen=1
 elif [ "$1" = "bootstrap" ]; then
 	useGen="bootstrap"
-elif [ "$1" = "web" ]; then
-	useGen="web"
 else
 	echo "Unknown generator specified"
 	exit
@@ -378,56 +375,6 @@ function mainBootstrap {
 	return 0
 }
 
-##########################################
-# Web generator section (bootstrap + md) #
-##########################################
-
-function mainWeb {
-	headerBootstrap
-	headerMarkdown
-	
-	echo -e "\n$infoHead Checking for languages using Product ID..."
-	
-	productsFound=0
-
-	for productID in $(seq $minProdID $maxProdID); do
-		echo "$infoHead Checking product ID: $productID"
-		getLangErr=2
-		while [ $getLangErr -gt 1 ]; do
-			getLangs $productID
-			getLangErr=$?
-			if [ $getLangErr -eq 0 ]; then
-				echo "$infoHead Got language list!"
-				getErr=1
-				while [ $getErr -ne 0 ]; do
-					getProductName
-					getErr=$?
-				done;
-				
-				echo "$infoHead Writing..."
-				writeHtml
-				writeMarkdown
-				
-				let productsFound=productsFound+1
-				echo "$infoHead OK!"
-			elif [ $getLangErr -eq 1 ]; then
-				echo "$errorHead Product does not exist!"
-			fi
-		done;
-		echo ""
-	done;
-	
-	footerBootstrap
-
-	sed s/!!productsNumberPlaceholder!!/$productsFound/g "Techbench dump.html" > "Techbench dump.tmp"
-	mv -f "Techbench dump.tmp" "Techbench dump.html"
-	
-	sed s/!!productsNumberPlaceholder!!/$productsFound/g "Techbench dump.md" > "Techbench dump.tmp"
-	mv -f "Techbench dump.tmp" "Techbench dump.md"
-
-	return 0
-}
-
 #######################
 # Main script section #
 #######################
@@ -444,9 +391,6 @@ elif [ "$useGen" = "md" ]; then
 elif [ "$useGen" = "bootstrap" ]; then
 	echo "$infoHead Using Bootstrap based HTML generator"
 	mainBootstrap
-elif [ "$useGen" = "web" ]; then
-	echo "$infoHead Using generator for Web"
-	mainWeb
 fi
 
 echo "$infoHead Number of products: $productsFound"
