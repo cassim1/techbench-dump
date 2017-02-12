@@ -35,10 +35,11 @@ Example command to create HTML file with products from range between 242 and 247
 ./tbdump.sh html 242 247
 ```
 
-TechBench dump
+TechBench dump website
 --------------
 Website: https://mdl-tb.ct8.pl/<br>
-Markdown: https://mdl-tb.ct8.pl/dump.md
+Markdown: https://mdl-tb.ct8.pl/dump.md<br>
+GitHub: https://github.com/mkuba50/techbench-dump-web
 
 Credits
 -------
